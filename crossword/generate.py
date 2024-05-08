@@ -159,24 +159,59 @@ class CrosswordCreator():
         return False if one or more domains end up empty.
         """
 
+        #function revie takes only variables names, so queue items should only
+        #be varaible names
+        queue = []
+        #apppend all the arc to the queue
+        if not arcs:
+            for var, _ in self.domains.items():
+                queue.append(var)
+        #self.crossword.neighbour(x) return only names of neighbouring variables without its values
+        while queue:
+            #get first two value of the queue and check arc consistency between them
+            x,y = queue.pop(0), queue.pop(1)
+            if self.revise(x,y):
+                if not self.domains[x]: #if variables have no values, then arc consistency cant be kept, so return False
+                    return False
+                #if changes was made, add element neighbours to the queue
+                for element in [self.crossword.neighbors(x) - y]:
+                    queue.append(element) #appends only variable name without its values
+
+        return True
 
 
-
-        raise NotImplementedError
 
     def assignment_complete(self, assignment):
         """
         Return True if `assignment` is complete (i.e., assigns a value to each
         crossword variable); return False otherwise.
         """
-        raise NotImplementedError
+        vals = []
+        for var, value in assignment.items():
+            if len(var[value]):
+                vals.append(True)
+            else:
+                vals.append(False)
 
-    def consistent(self, assignment):
+        if all(vals):
+            return True
+
+        return False
+
+    def consistent(self, assignment): #assigment always have full number of variables as they
+                                      #are created at the start of the program
+                                      #while initializing CrosswordCreator class
         """
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
-        raise NotImplementedError
+        ac3 = self.ac3()
+        self.enforce_node_consistency()
+
+        if ac3:
+            return True
+
+        return False
 
     def order_domain_values(self, var, assignment):
         """
@@ -185,7 +220,11 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        raise NotImplementedError
+
+
+
+        #doesn't change the order of variables
+        return [var for var, _ in self.domains.items()]
 
     def select_unassigned_variable(self, assignment):
         """
@@ -195,6 +234,8 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
+
+
         raise NotImplementedError
 
     def backtrack(self, assignment):
