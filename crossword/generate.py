@@ -128,9 +128,26 @@ class CrosswordCreator():
         False if no revision was made.
         """
 
+        change = False
+        #lap[x,y] indeces of x and y where they both overlap with each other
+        lap = self.crossword.overlaps[x,y]
+        #iterating through all the values in x and y domain
+        for x_val in self.domains[x]:
+            truth_table = []
+            for y_val in self.domains[y]:
+                #if overlapping index of word in x domain is not the same as overlapping index of word in y, append False
+                if x_val[lap[0]] != y_val[lap[1]]:
+                    truth_table.append(False)
+                #else append True
+                else:
+                    truth_table.append(True)
 
+            #truth table contains True if x domain value is consistent with at least one of the y domain value
+            if not any(truth_table):
+                self.domains[x].remove(x_val)
+                change = True
 
-        raise NotImplementedError
+        return change
 
     def ac3(self, arcs=None):
         """
@@ -141,6 +158,10 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
+
+
+
+
         raise NotImplementedError
 
     def assignment_complete(self, assignment):
