@@ -1,5 +1,5 @@
 import sys
-
+import random
 from crossword import *
 
 
@@ -221,10 +221,27 @@ class CrosswordCreator():
         that rules out the fewest values among the neighbors of `var`.
         """
 
+        num = dict()
+        #iterates through neighbours of variable
+        for neighbor in self.crossword.neighbors(var):
+            #checks if neighbour's values is already assigned
+            if neighbor in assignment.items():
+                lap = self.crossword.overlaps(var, neighbor)
+                for value1 in var.values():
+                    if value1 not in num.keys():
+                        num[value1] = 0
+                    for value2 in neighbor.values():
+                        #iterates through the domain of variable and neighbour
+                        #and for each value ruled out by domain variable
+                        #icreases value of domain key in num dictionary
+                        if value1[lap[0]] != value2[lap[1]]:
+                            num[value1] += 1
 
+        #sorting the dictionary by vaelues in ascending order
+        sort = sorted(num.items(), key=lambda d: d[1])
+        domains = [x for (x,y) in sort]
 
-        #doesn't change the order of variables
-        return [var for var, _ in self.domains.items()]
+        return domains
 
     def select_unassigned_variable(self, assignment):
         """
@@ -234,9 +251,47 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
+        not_assigned = self.domains.difference(assignment)
 
+        MRV = dict()
 
-        raise NotImplementedError
+        #assaigns every variable length of its domain
+        for variable, domain in not_assigned.items():
+            MRV[variable] = len(domain)
+
+        #sorting by length of domain
+        s_MRV = sorted(MRV, key = lambda d: d[1])
+
+        #if two first elements are the same
+        #check is it even possible to search for duplicates in MRV if not return variable of lovest MRV
+        if len(s_MRV) > 2:
+            dgr = []
+            #get elements that have the same MRV value 
+            for index,element in enumerate(s_MRV): #MRV = {(val,var) <- element}
+                if element[index][1] == s_MRV[0][1]:
+                    dgr.append(element)
+            if dgr:
+                #if there are values of same MRV calculate degree for each of those, and sort dgr by their values,else return variable of lowest MRV
+                dgr = [(element[index][0],len(self.crossword.neighbors(element[index][0]))) for index, element in enumerate(dgr)]
+                dgr = sorted(dgr, key = lambda d: d[1], reverse=True)
+                #if it is possible to even look for duplicates in dgr values, else return value of highest degree
+                if len(dgr) > 2:
+                    rnd = []
+                    for index,element in enumerate(dgr):
+                        if element[index][1] == dgr[0][1]:
+                            rnd.append(element)
+                    
+                    #return random value
+                    ind = random.choice(range(0, len(rnd)))
+                    return {rnd[ind][0]: rnd[ind][1]}.items   
+                
+                
+                return {dgr[0][0]:dgr[0][1]}.items()
+            
+            return {s_MRV[0][0]:s_MRV[0][1]}.items()
+        
+        return {s_MRV[0][0]:s_MRV[0][1]}.items()
+
 
     def backtrack(self, assignment):
         """
