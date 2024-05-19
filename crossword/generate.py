@@ -260,7 +260,7 @@ class CrosswordCreator():
             if variable.length != len(assignment[variable]):
                 return False
 
-                                          # check if there are any conflicts between neighbouring variables
+                                         
         for variable in assignment:
             for neighbour in self.crossword.neighbors(variable):
                 if neighbour in assignment:
@@ -268,7 +268,7 @@ class CrosswordCreator():
                     if assignment[variable][x] != assignment[neighbour][y]:
                         return False
 
-                                          # all cases checked, no conflicts, can return True
+                                          
         return True
 
 
