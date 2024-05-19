@@ -140,7 +140,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone not in set` have_trait` does not have the trait.
     """
 
-    info = { #TODO
+    info = { 
         person:
             {
                 "ggene": 1 if person is one_gene else 2 if person in two_genes else 0,
@@ -158,118 +158,21 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
             father = info[person]["parents"][0]
             father_genes = info[father]["ggene"]
+            father_prob = PROBS["mutation"] if father_genes == 0 else 0.5 if father_genes == 1 else 1 - PROBS["mutation"]
             mother = info[person]["parents"][1]
             mother_genes = info[mother]["ggene"]
-
-            if info[person]["ggene"] == 1:
-
-                if father_genes == 0 and mother_genes == 0:
-                    genes_passed.append(PROBS["mutation"] * (1 - PROBS["mutation"]))#przez dostanie od ojca mutacje * że nie dostanie go od matki
-                    genes_passed.append((1 - PROBS["mutation"]) * PROBS["mutation"])
-
-                elif father_genes == 0 and mother_genes == 1:
-                    genes_passed.append((PROBS["mutation"]) *  (0.5 - PROBS["mutation"]))
-                    genes_passed.append((1-PROBS["mutation"]) * (0.5 - PROBS["mutation"]))
-                    genes_passed.append((1-PROBS["mutation"]) * (0.5 - PROBS["mutations"]))
-
-                elif father_genes == 0 and mother_genes == 2:
-                    genes_passed.append((1-PROBS["mutation"]) * (1-PROBS["mutation"]))
-                    genes_passed.append(PROBS["mutations"] * PROBS["mutations"])
-
-                elif father_genes == 1 and mother_genes == 0:
-                    genes_passed.append((0.5- PROBS["mutation"]) * PROBS["mutation"])
-                    genes_passed.append((0.5 - PROBS["mutations"]) * (1-PROBS["mutations"]))
-                    genes_passed.append((0.5 - PROBS["mutations"]) * (1-PROBS["mutations"]))
-
-                elif father_genes == 1 and mother_genes == 1:
-                    genes_passed.append((0.5 - PROBS["mutation"]) * (0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])* (0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])* (0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])* (0.5 - PROBS["mutation"]))
-
-                elif father_genes == 1 and mother_genes == 2:
-                    genes_passed.append((0.5 - PROBS["mutation"]) * (1 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"]) * (PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"]) * PROBS["mutation"])
-
-                elif father_genes == 2 and mother_genes == 0:
-                    genes_passed.append((1-PROBS["mutation"] * (1-PROBS["mutation"])))
-                    genes_passed.append(PROBS["mutation"] * PROBS["mutation"])
-
-                elif father_genes == 2 and mother_genes == 1:
-                    genes_passed.append((1 - PROBS["mutation"]) * (0.5 - PROBS["mutation"]))
-                    genes_passed.append(PROBS["mutation"] * (0.5 - PROBS["mutation"]))
-                    genes_passed.append((1-PROBS["mutation"] * (0.5 - PROBS["mutation"])))
-
-                elif father_genes == 2 and mother_genes == 2:
-                    genes_passed.append((1-PROBS["mutation"]) * (PROBS["mutation"]))
-                    genes_passed.append((PROBS["mutation"]) * (1-PROBS[mutation]))
-
-            elif info[person]["ggene"] == 2:
-
-                if father_genes == 0 and mother_genes == 0:
-                    genes_passed.append(PROBS["mutation"] * PROBS["mutation"])
-
-                elif father_genes == 0 and mother_genes == 1:
-                    genes_passed.append(PROBS["mutation"] * (0.5 - PROBS["mutation"]))
-                    genes_passed.append(PROBS["mutation"] * (0.5 - PROBS["mutation"]))
-
-                elif father_genes == 0 and mother_genes == 2:
-                    genes_passed.append(PROBS["mutation"] * (1-PROBS["mutation"]))
-
-                elif father_genes == 1 and mother_genes == 0:
-                    genes_passed.append((0.5 - PROBS["mutations"]) * PROBS["mutation"])
-                    genes_passed.append((0.5 - PROBS["mutations"]) * PROBS["mutation"])
-
-                elif father_genes == 1 and mother_genes == 1:
-                    genes_passed.append((0.5 - PROBS["mutation"])*(0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])*(0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])*(0.5 - PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])*(0.5 - PROBS["mutation"]))
-
-                elif father_genes == 1 and mother_genes == 2:
-                    genes_passed.append((0.5 - PROBS["mutation"])* (1-PROBS["mutation"]))
-                    genes_passed.append((0.5 - PROBS["mutation"])* (1-PROBS["mutation"]))
-
-                elif father_genes == 2 and mother_genes == 0:
-                    genes_passed.append((1-PROBS["mutation"]) * PROBS["mutation"])
-
-                elif father_genes == 2 and mother_genes == 1:
-                    genes_passed.append((1-PROBS["mutation"]) * (0.5-PROBS["mutation"]))
-                    genes_passed.append((1-PROBS["mutation"]) * (0.5-PROBS["mutation"]))
-
-                elif father_genes == 2 and mother_genes == 2:
-                    genes_passed.append((1-PROBS["mutation"])*(1-PROBS["mutation"]))
-
-            else: #person have 0 genes
-                if father_genes == 0 and mother_genes == 0:
-                    genes_passed.append((1-PROBS["mutation"]) * (1-PROBS["mutation"]))
-
-                elif father_genes == 0 and mother_genes == 1:
-                    genes_passed.append((1-PROBS["mutation"]) * (0.5-PROBS["mutation"]))
-
-                elif father_genes == 0 and mother_genes == 2:
-
-                    genes_passed.append((1-PROBS["mutation"]) * PROBS["mutation"])
+            mother_prob = PROBS["mutation"] if father_genes == 0 else 0.5 if father_genes == 1 else 1 - PROBS["mutation"]
 
 
-                elif father_genes == 1 and mother_genes == 0:
-                    genes_passed.append( (0.5 - PROBS["mutation"]) * (1-PROBS["mutation"]))
+            if info[person]["ggene"] == 0:
+                genes_passed.append( 1 - father_prob * 1 - mother_prob)
 
-                elif father_genes == 1 and mother_genes == 1:
-                    genes_passed.append((0.5-PROBS["mutation"])*(0.5-PROBS["muation"]))
+            elif info[person]["ggene"] == 1:
+                genes_passed.append(1 - father_prob * mother_prob + 1 - mother_prob + father_prob)
 
-                elif father_genes == 1 and mother_genes == 2:
-                    genes_passed.append((0.5-PROBS["mutation"]) * PROBS["mutation"])
+            else: #person have 2 genes
+                genes_passed.append( father_prob * mother_prob)
 
-                elif father_genes == 2 and mother_genes == 0:
-                    genes_passed.append(PROBS["mutation"] * (1-PROBS["mutation"]))
-
-                elif father_genes == 2 and mother_genes == 1:
-                    genes_passed.append(PROBS["mutation"] * (0.5 - PROBS["muation"]))
-
-                elif father_genes == 2 and mother_genes == 2:
-                    genes_passed.append(PROBS["mutation"] * PROBS["mutation"])
 
             total_gene = sum(genes_passed)
 
