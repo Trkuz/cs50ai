@@ -106,7 +106,7 @@ class CrosswordCreator():
 
         not_consistent = {x: set() for x,y in self.domains.items()}
         #iterates thorugh the domains checking which words are of different length than length of variable,
-        #then adding them do not_consisten dictionary
+        #then adding them do not_consistent dictionary
         for var, words in self.domains.items():
             for word in words:
                 if var.length != len(word):
@@ -252,34 +252,27 @@ class CrosswordCreator():
         puzzle without conflicting characters); return False otherwise.
         """
 
-        # words = [*assignment.values()]
-        # if len(words) != len(set(words)):
-        #     return False
-        #
-        #                               # check if every value is the correct length
-        # for variable in assignment:
-        #     if variable.length != len(assignment[variable]):
-        #         return False
-        #
-        #                               # check if there are any conflicts between neighbouring variables
-        # for variable in assignment:
-        #     for neighbour in self.crossword.neighbors(variable):
-        #         if neighbour in assignment:
-        #             x, y = self.crossword.overlaps[variable, neighbour]
-        #             if assignment[variable][x] != assignment[neighbour][y]:
-        #                 return False
-        #
-        #                               # all cases checked, no conflicts, can return True
-        # return True
+        words = [*assignment.values()]
+        if len(words) != len(set(words)):
+            return False
+
+        for variable in assignment:
+            if variable.length != len(assignment[variable]):
+                return False
+
+                                          # check if there are any conflicts between neighbouring variables
+        for variable in assignment:
+            for neighbour in self.crossword.neighbors(variable):
+                if neighbour in assignment:
+                    x, y = self.crossword.overlaps[variable, neighbour]
+                    if assignment[variable][x] != assignment[neighbour][y]:
+                        return False
+
+                                          # all cases checked, no conflicts, can return True
+        return True
 
 
-
-        ac3 = self.ac3() #def ac3(self, arcs = None) #make all the assignment nodes satisfy the arc consistency between each other
-        self.enforce_node_consistency()
-
-        if ac3:
-            return True
-        return False
+        #no need to run ac3 ans self.enforce node_consistency() as this function only checks if nodes are consistent, not making it consistent itself
 
     def order_domain_values(self, var, assignment):
         """
@@ -371,20 +364,19 @@ class CrosswordCreator():
         If no assignment is possible, return None.
         """
 
-
         if self.assignment_complete(assignment): return assignment
         var = list(self.select_unassigned_variable(assignment))[0][0]
         domain = list(self.domains[var])
-
         for value in domain:
             check = copy.deepcopy(assignment)
             check[var] = value
-
             if self.consistent(check):
                 assignment[var] = value
                 result = self.backtrack(assignment)
                 if not (not result): return result
-            check.remove(value)
+            #del check[value]# removes whole element from dictionary
+        if var in assignment:
+            del assignment[var]
         return False
 
 def main():
