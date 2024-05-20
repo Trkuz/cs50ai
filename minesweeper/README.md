@@ -1,0 +1,2 @@
+## MINESWEEPER
+This program generated minesweeper move with randomly located mines, player can play this game alone, or he can have an AI to play it for him, using infrences to find all the mines locations
