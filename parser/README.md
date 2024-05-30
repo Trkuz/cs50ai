@@ -1,1 +1,1 @@
-#Program for pasing a sentece
+# Program for pasing a sentece
