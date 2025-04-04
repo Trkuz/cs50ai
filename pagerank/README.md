@@ -1,9 +1,9 @@
 # PAGERANK
-This program calculates PageRank of sites included in corpus directories
+This program calculates PageRank score of websites included in corpus directories
 
 ### It works it two ways:
 
 - using sampling
 - using the formula
 
-After calculating, it compares the results of both methods.
+After calculation with both methods, it compares the results between them. 
