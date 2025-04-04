@@ -1,2 +1,2 @@
 ## MINIMAX
-Program that generates tic tac toe board, than after player move, ai plays the next move, program was created using minimax algorithm
+Program designed to generate an tic-tac-toe game. After the  player makes a move, an oponent AI finds the best possible move in that position and plays it.
