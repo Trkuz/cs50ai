@@ -1,2 +1,2 @@
 ## MINESWEEPER
-This program generated minesweeper move with randomly located mines, player can play this game alone, or he can have an AI to play it for him, using infrences to find all the mines locations
+This program is designed to generate minesweeper board with randomly located mines. The player can play this game by homself, or have an AI to play it, finding all the mines location using knowledge-based infrence mechanism. 
