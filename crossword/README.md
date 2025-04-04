@@ -1,2 +1,2 @@
 ## CROSSWORD
-This program generates a blank crossword, then provided with database of words find ones that fit and dont collide with each other, then generates image of filled crossword.
+The program generates a blank crossword, then provided with database of words find ones that fit the crossword and don't collide with each other. After conpetition, the program generates an image of filled crossword.
