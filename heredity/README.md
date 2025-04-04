@@ -1,4 +1,4 @@
 ## HEREDITY
-program that assess the likelihood that a person will have a particular genetic trait.
+program designed to assess the likelihood of person having a particular genetic trait.
 
-It assess it based of relations between parents and child in Bayesian Network
+The presictions are made based on the  relations between parents and children in the Bayesian Network
