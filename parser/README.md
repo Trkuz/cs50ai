@@ -1,1 +1,1 @@
-# Program designed to phrase an input sentece. 
+# Program designed to parse an input sentece. 
