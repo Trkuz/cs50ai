@@ -1,3 +1,3 @@
-# AI that predicts a masked word in a text sequence, using HuggingFace transformel model(BERT)
-## In addtion to that program generates an attention diagram for each word used in sentence which indicates to which models have payed most attention
-## Those diagrms are generated for each layer and head of the model (144 diagrams in total)
+# AI that predicts a masked word in a text sequence, using HuggingFace transformer model(BERT)
+## Additionally, the program generates an attention diagram for each word used in the sentencje.
+## Those diagrms are generated for each layer and head of the model and indica the attention level to each of the words considered. 
